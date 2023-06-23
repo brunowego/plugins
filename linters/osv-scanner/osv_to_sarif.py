@@ -60,7 +60,7 @@ def to_result_sarif(
 def main(argv):
     # On Windows, Unicode characters in the osv-scanner output cause json parsing errors. Filter them out since we don't care about their fields.
     if sys.platform == "win32":
-        filtered_stdin = ''.join(i for i in sys.stdin.read() if ord(i) < 256)
+        filtered_stdin = "".join(i for i in sys.stdin.read() if ord(i) < 256)
         osv_json = json.loads(filtered_stdin)
     else:
         osv_json = json.load(sys.stdin)
