@@ -19,7 +19,7 @@ const TEMP_SUBDIR = "tmp";
 const UNINITIALIZED_ERROR = `You have attempted to modify the sandbox before it was created.
 Please call this method after setup has been called.`;
 
-const executionEnv = (sandbox: string) => {
+export const executionEnv = (sandbox: string) => {
   // trunk-ignore(eslint/@typescript-eslint/no-unused-vars)
   const { PWD, INIT_CWD, ...strippedEnv } = process.env;
   return {
@@ -141,21 +141,28 @@ export class GenericTrunkDriver {
     const trunkCommand = ARGS.cliPath ?? "trunk";
 
     // Preserve test directory if `SANDBOX_DEBUG` is truthy.
-    if (ARGS.sandboxDebug) {
+    try {
+      console.log(`Preserving test dir ${this.getSandbox()}`);
       execFileSync(trunkCommand, ["daemon", "shutdown"], {
         cwd: this.sandboxPath,
         env: executionEnv(this.getSandbox()),
       });
-      console.log(`Preserving test dir ${this.getSandbox()}`);
-      return;
+      // return;
+    } catch (err: any) {
+      // console.log(`failed to shutdown, with error ${err}`);
+    }
+    try {
+      this.daemon?.kill();
+    } catch (err: any) {
+      // console.log(`failed to kill daemon: ${err}`);
     }
 
-    execFileSync(trunkCommand, ["deinit"], {
-      cwd: this.sandboxPath,
-      env: executionEnv(this.getSandbox()),
-    });
+    // execFileSync(trunkCommand, ["deinit"], {
+    //   cwd: this.sandboxPath,
+    //   env: executionEnv(this.getSandbox()),
+    // });
 
-    if (this.sandboxPath) {
+    if (this.sandboxPath && !ARGS.sandboxDebug) {
       fs.rmSync(this.sandboxPath, { recursive: true });
     }
   }
