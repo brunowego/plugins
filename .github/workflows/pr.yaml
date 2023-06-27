@@ -50,7 +50,6 @@ jobs:
           sourcery-token: ${{ secrets.TRUNK_SOURCERY_TOKEN }}
           cli-path: ${{ github.workspace }}\trunk.ps1
 
-
   # detect_changes:
   #   name: Detect changed files
   #   runs-on: ubuntu-latest

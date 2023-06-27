@@ -146,8 +146,8 @@ export class GenericTrunkDriver {
       // console.log(`failed to shutdown, with error ${err}`);
       try {
         this.daemon?.kill(9);
-      } catch (err: any) {
-        console.log(`failed to kill daemon: ${err}`);
+      } catch (err2: any) {
+        console.log(`failed to kill daemon: ${err2 as string}`);
       }
     }
 
@@ -333,7 +333,7 @@ export class GenericTrunkDriver {
    * @param args arguments to run, excluding `trunk`
    * @param execOptions
    */
-  async runTrunkSync(args: string[], execOptions?: ExecOptions) {
+  runTrunkSync(args: string[], execOptions?: ExecOptions) {
     return execFileSync(...this.buildExecArgs(args, execOptions));
   }
 
@@ -342,7 +342,7 @@ export class GenericTrunkDriver {
    * @param args arguments to run, excluding `trunk`
    * @param execOptions
    */
-  async runTrunkAsync(args: string[], execOptions?: ExecOptions) {
+  runTrunkAsync(args: string[], execOptions?: ExecOptions) {
     return execFile(...this.buildExecArgs(args, execOptions));
   }
 
