@@ -40,6 +40,11 @@ runtimes:
       runtime_environment:
         - name: HOME
           value: ${env.HOME:-}
+        - name: SYSTEMROOT
+          value: ${env.SYSTEMROOT}
+          optional: true
+        - name: PYTHONPATH
+          value: "${runtime}" # Windows places binaries here instead of bin/
         - name: PATH
           list:
             - "${runtime}/bin"
